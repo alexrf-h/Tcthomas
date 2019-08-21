@@ -1,11 +1,11 @@
-#define EN PORTEbits.RE1
-#define RS PORTEbits.RE2
-#define D4 PORTDbits.RD4
-#define D5 PORTDbits.RD5
-#define D6 PORTDbits.RD6
-#define D7 PORTDbits.RD7
+#define EN RE1
+#define RS RE2
+#define D4 RD4
+#define D5 RD5
+#define D6 RD6
+#define D7 RD7
 
-void Lcd_Port(const unsigned char x)//envia os 4 bits para o LCD de uma das duas funções abaixo
+void Lcd_Port(const unsigned char x)//envia os 4 bits para o LCD de uma das duas funÃ§Ãµes abaixo
 {
 	if(x&0x01)
 	D4 = 0x01;
@@ -58,7 +58,7 @@ void Lcd_Envia_Dado(const unsigned char x)//envia um dado para o LCD (caracter, 
 	EN = 0x00;	
 }
 
-void Lcd_Envia_Texto(const unsigned char *x)//com o auxílio da função acima envia palavra ou texto para o LCD
+void Lcd_Envia_Texto(const unsigned char *x)//com o auxÃ­lio da funÃ§Ã£o acima envia palavra ou texto para o LCD
 {
 	int i;
     for(i = 0; x[i]!='\0'; i++)
@@ -82,7 +82,7 @@ void Lcd_Iniciar()//Inicia o LCD no modo 4 bits, cursor desligado e formato 5X7
 	Lcd_Envia_Cmd(0x06);
 }
 
-void Lcd_Limpar()//limpa informações do LCD
+void Lcd_Limpar()//limpa informaÃ§Ãµes do LCD
 {
 
 	Lcd_Envia_Cmd(0x00);
