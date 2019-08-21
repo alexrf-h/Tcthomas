@@ -110,7 +110,23 @@ void Lcd_Cursor(const unsigned l, const unsigned c)//posiciona o cursor (linha e
 		y = posicao&0x0F;
 		Lcd_Envia_Cmd(z);
 		Lcd_Envia_Cmd(y);
-	}	
+	}
+        else if(l == 0x03)
+	{
+		posicao = 0x94 + c - 1;
+		z = posicao>>0x04;
+		y = posicao&0x0F;
+		Lcd_Envia_Cmd(z);
+		Lcd_Envia_Cmd(y);
+	}
+        else if(l == 0x04)
+	{
+		posicao = 0xD4 + c - 1;
+		z = posicao>>0x04;
+		y = posicao&0x0F;
+		Lcd_Envia_Cmd(z);
+		Lcd_Envia_Cmd(y);
+	}
 }
 
 void Lcd_Shift_Left()//desloca o texto para a esquerda
