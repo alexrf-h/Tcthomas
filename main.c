@@ -10,7 +10,7 @@
 #include "Config_16F871.h"      //Inclusa a configuraÃ§Ã£o do PIC
 #include "lcd.h"        //Incluso a biblioteca do LCD
 
-#define RB0 cima;
+#define RB0 cima;           // botão cima identificado como RB0 
 #define RB1 baixo;
 #define RB2 confirma;
 #define RB3 volta;
@@ -29,20 +29,38 @@ void main ()
     PORTA = 0x01;
     TRISB = 0x0F;
 
-    lcd_iniciar ();
-    lcd_limpar ();
+    char  inicio=0;
+    
+    
+    lcd_iniciar ();  //inicia o lcd
+    lcd_limpar ();  // limpa o lcd
 
     while (1)
-    {
+    {                                       // inicio da laço de repetição
         lcd_cursor (2,7);
         lcd_envia_texto("Aperte");
         lcd_cursor (3,7);
         lcd_envia_texto("confirma");
-
-        if (confirma ==1)
+        
+        
+        
+        if (inicio == 0);
+        {
+        if (confirma ==1 )
         {
             lcd_limpar();
-            
+            lcd_cursor(1,1);
+            lcd_envia_texto("Bem vindo ao simulador didático");
+            lcd_cursor(3,1);
+            lcd_envia_texto("Por favor,");
+            lcd_cursor(4,1);
+            lcd_envia_texto("antes de utilizar leia o manual do usuário");
+            inicio=1;
+        }
+        
+        
+        
+        }
         }
 
 
