@@ -7,27 +7,28 @@
 
 #include <stdio.h>      //Inclusa a biblioteca C
 #include <stdlib.h>     //Inclusa a biblioteca do windows
-#include "Config_16F871.h"      //Inclusa a configuraÃ§Ã£o do PIC
+#include "Config_16F871.h"      //Inclusa a configuraÃÂ§ÃÂ£o do PIC
 #include "lcd.h"        //Incluso a biblioteca do LCD
 
-#define RB0 cima;           // botão cima identificado como RB0 
-#define RB1 baixo;          // botão baixo identificado como RB1
-#define RB2 confirma;       // botão confirma como RB2
-#define RB3 volta;          // botão volta como RB3
+#define cima RB0;           // botÃ£o cima identificado como RB0
+#define baixo RB1;          // botÃ£o baixo identificado como RB1
+#define confirma RB2;       // botÃ£o confirma como RB2
+#define volta RB3;          // botÃ£o volta como RB3
 
-#define RA1 led1;           // define saidas do portA como led's
-#define RA2 led2;
-#define RA3 led3;
-#define RA4 led4;
-#define RA5 led5;
+#define led1 RA0;           // define saidas do portA como led's
+#define led2 RA1;
+#define led3 RA2;
+#define led4 RA3;
+#define led5 RA5;
 
 void main ()
 {                               //Inicio da main
-    TRISD = 0x00;               // configuração para o lcd
-    PORTD = 0x00;               // configuração para o lcd
+    TRISD = 0x00;               // configuraçao para o lcd
+    PORTD = 0x00;               // configuraçao para o lcd
     TRISA = 0x00;               // configura saidas para os leds    
     PORTA = 0x00;               // configura saidas para os leds         
-    TRISB = 0x0F;               // configura entrada para os botões 
+    TRISB = 0x0F;               // configura entrada para os botÃµes
+    TRISE = 0x01;               // config do lcd
 
     char  inicio=0;             // variavel para iniciar o lcd 
     
@@ -36,15 +37,15 @@ void main ()
     lcd_limpar ();  // limpa o lcd
 
     while (1)
-    {                                       // inicio da laço de repetição
+    {                                       // inicio da laÃ§o de repetiÃ§Ã£o
         lcd_cursor (2,7);                   
         lcd_envia_texto("Aperte");
         lcd_cursor (3,7);
         lcd_envia_texto("confirma");
             
-        if (inicio == 0);                    // caso variável de início for 0
-        { // inicio do laço de início
-        if (confirma ==1 )                   // caso botão confirma for pressionado
+        if (inicio == 0);                    // caso variÃ¡vel de inÃ­cio for 0
+        { // inicio do laÃ§o de inÃ­cio
+        if (RB2 == 1)                   // caso botÃ£o confirma for pressionado
         {
             lcd_limpar();   
             lcd_cursor(1,1);
@@ -56,15 +57,15 @@ void main ()
             lcd_cursor(4,1);
             lcd_envia_texto("antes de utilizar leia o manual do usuario");
             __delay_ms(8000);
-            inicio=1;                       // seta variável de início como 1                           
+            inicio=1;                       // seta variÃ¡vel de inÃ­cio como 1                           
         }
         
         
         
-        }// fim do laço de início
+        }// fim do laÃ§o de inÃ­cio
         }
 
 
-    }
+    }// Fim da Main
 
-}       // Fim da Main
+      
