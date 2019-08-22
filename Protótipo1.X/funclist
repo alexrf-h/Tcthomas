@@ -1,0 +1,12 @@
+__stringtab: STRING, 1 0 6
+__stringdata: STRING, 7 0 102
+_main: CODE, 1739 0 131
+_lcd_envia_cmd: CODE, 1586 0 21
+__initialization: CODE, 2046 0 0
+_lcd_envia_dado: CODE, 1691 0 48
+_lcd_limpar: CODE, 1575 0 11
+_lcd_cursor: CODE, 1870 0 176
+_lcd_port: CODE, 1629 0 26
+_lcd_envia_texto: CODE, 1607 0 22
+_lcd_iniciar: CODE, 1655 0 36
+Total: 579
