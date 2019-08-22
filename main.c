@@ -21,37 +21,122 @@
 #define led4 RA3;
 #define led5 RA5;
 
+/*
+
+        void's de comandos
+
+*/
+
+
+
 void cursor()                                   // void que posiciona um traço para simbolizar onde o crusor esta
 {
     char posicao ;
     
     lcd_cursor(posicao,1);
     lcd_envia_texto("-");
-
-
-
 }
-
-
 
 void sobe ()                                   // void que possibilita a navegacao pelo menu
 {
     char posicao ;
-    posicao++;
-    }
+    posicao--;
+    if(posicao<1)                              //limita o cursor de ir além das possibilidades do menu
+        posicao=1;
+}
 
-
-void desce()
+void desce()    
 {
     char posicao ;   
-        posicao--;
+        posicao++;
+    if(posicao>9)                              //limita o cursor de ir além das possibilidades do menu
+        posicao=9;
     }
 
+/*
 
+        void's de niveis do menu de selecao
 
+*/
+        void nivel_1()
+        {
+            lcd_limpar();
+            lcd_cursor(1,2);
+            lcd_envia_texto("Escolha a partida:");
+            lcd_cursor(3,2);
+            lcd_envia_texto("Partida 1");
+            lcd_cursor(4,2);
+            lcd_envia_texto("Partida 2");
+            cursor();
+        
+        }
 
+        void nivel_2()
+        {
+            lcd_limpar();
+            lcd_cursor(2,2);
+            lcd_envia_texto("Partida 1");
+            lcd_cursor(3,2);
+            lcd_envia_texto("Partida 2");
+            lcd_cursor(4,2);
+            lcd_envia_texto("Partida 3");
+            
+        }
 
+        void nivel_3()
+        {
+            lcd_limpar();
+            lcd_cursor(1,2);
+            lcd_envia_texto("Partida 1");
+            lcd_cursor(2,2);
+            lcd_envia_texto("Partida 2");
+            lcd_cursor(3,2);
+            lcd_envia_texto("Partida 3");
+            lcd_cursor(4,2);
+            lcd_envia_texto("Partida 4");
+        }
 
+        void nivel_4()
+        {
+           lcd_limpar();
+            lcd_cursor(1,2);
+            lcd_envia_texto("Partida 2");
+            lcd_cursor(2,2);
+            lcd_envia_texto("Partida 3");
+            lcd_cursor(3,2);
+            lcd_envia_texto("Partida 4");
+            lcd_cursor(4,2);
+            lcd_envia_texto("Partida 5"); 
+
+        }
+
+        void nivel_5()
+        {
+           lcd_limpar();
+            lcd_cursor(1,2);
+            lcd_envia_texto("Partida 3");
+            lcd_cursor(2,2);
+            lcd_envia_texto("Partida 4");
+            lcd_cursor(3,2);
+            lcd_envia_texto("Partida 5");
+            lcd_cursor(4,2);
+            lcd_envia_texto("Partida 6"); 
+
+        }
+
+        void nivel_6()
+        {
+           lcd_limpar();
+            lcd_cursor(1,2);
+            lcd_envia_texto("Partida 4");
+            lcd_cursor(2,2);
+            lcd_envia_texto("Partida 5");
+            lcd_cursor(3,2);
+            lcd_envia_texto("Partida 6");
+            lcd_cursor(4,2);
+            lcd_envia_texto("Partida 7"); 
+
+        }
 
 void main ()
 {                                               //Inicio da main
@@ -72,15 +157,15 @@ void main ()
     lcd_limpar ();                              // limpa o lcd
 
     while (1)
-    {                                           // inicio da laÃ§o de repetiÃ§Ã£o
+    {                                           // inicio da laco de repeticao
         lcd_cursor (2,7);                   
         lcd_envia_texto("Aperte");
         lcd_cursor (3,7);
         lcd_envia_texto("confirma");
             
-        if (inicio == 0);                       // caso variÃ¡vel de inÃ­cio for 0
-        {                                       // inicio do laÃ§o de inÃ­cio
-        if (RB2 == 1)                           // caso botÃ£o confirma for pressionado
+        if (inicio == 0);                       // caso variÃ¡vel de inicio for 0
+        {                                       // inicio do laÃ§o de inicio
+        if (RB2 == 1)                           // caso botao confirma for pressionado
         {                                       // inicio do laco do botao
             lcd_limpar();   
             lcd_cursor(1,2);
@@ -92,38 +177,52 @@ void main ()
             lcd_cursor(4,2);
             lcd_envia_texto("antes de utilizar leia o manual do usuario");
             __delay_ms(5000);
-            inicio=1;                           // seta variÃ¡vel de inÃ­cio como 1
+            inicio=1;                           // seta variavel de inicio como 1
             lcd_limpar();
 
         }                                       // fim do laco do botao
         }                                       // fim do laco de inicio
 
+        /*
+        
+        inicio do menu selecao de partidas
+        
+        */
+        
         if (inicio==1 || menu ==0)
         {
-
-            lcd_cursor(1,2);
-            lcd_envia_texto("Escolha a partida:");
-            lcd_cursor(3,2);
-            lcd_envia_texto("Partida 1");
-            lcd_cursor(4,2);
-            lcd_envia_texto("Partida 2");
-            cursor();
-            
             if (RB0==1) // se botao cima for pressionado
             {    sobe();
-                __delay_ms(100);
+                 cursor();   
+             __delay_ms(50);
+             
             }
             
             if (RB1==1) // se botao baixo for pressionado
             {     desce();
-            __delay_ms(100);
+             cursor();
+            __delay_ms(50);
             }
             
-            if(posicao>5)   // caso a posicao do cursor atingir a borda do lcd
-            {
-                linha-- ;
-                posicao=4;
-            }
+            
+            if (posicao<5)
+                nivel_1();
+            if(posicao==5)         
+                nivel_2();
+            if(posicao==6)               
+                nivel_3();
+            if(posicao==7)              
+                nivel_4();
+            if(posicao==8)               
+                nivel_5();
+            if(posicao==9)           
+                nivel_6();
+            
+            
+            
+            
+                
+            
 
         }                                       // fim menu
         }                                       // fim da while
