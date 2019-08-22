@@ -5,7 +5,7 @@
 #define D6 RD6
 #define D7 RD7
 
-void Lcd_Port(const unsigned char x)//envia os 4 bits para o LCD de uma das duas funções abaixo
+void lcd_port(const unsigned char x)//envia os 4 bits para o LCD de uma das duas funções abaixo
 {
 	if(x&0x01)
 	D4 = 0x01;
@@ -31,66 +31,66 @@ void Lcd_Port(const unsigned char x)//envia os 4 bits para o LCD de uma das duas
 	D7 = 0x00;
 }
 
-void Lcd_Envia_Cmd(const unsigned x)//envia um comando para o LCD
+void lcd_envia_cmd(const unsigned x)//envia um comando para o LCD
 {
 	RS = 0x00;
-	Lcd_Port(x);
+	lcd_port(x);
 	EN = 0x01;
 	__delay_ms(0x04);
 	EN = 0x00;
 }
 
-void Lcd_Envia_Dado(const unsigned char x)//envia um dado para o LCD (caracter, letra ou numero)
+void lcd_envia_dado(const unsigned char x)//envia um dado para o LCD (caracter, letra ou numero)
 {
 	unsigned char z = x>>0x04;
 	unsigned char y = x&0x0F;
 	
 	RS = 0x01;
 
-	Lcd_Port(z);
+	lcd_port(z);
 	EN = 0x01;
 	__delay_us(40);
 	EN = 0x00;
 
-	Lcd_Port(y);
+	lcd_port(y);
 	EN = 0x01;
 	__delay_us(0x28);
 	EN = 0x00;	
 }
 
-void Lcd_Envia_Texto(const unsigned char *x)//com o auxílio da função acima envia palavra ou texto para o LCD
+void lcd_envia_texto(const unsigned char *x)//com o auxílio da função acima envia palavra ou texto para o LCD
 {
 	int i;
     for(i = 0; x[i]!='\0'; i++)
-	Lcd_Envia_Dado(x[i]);
+	lcd_envia_dado(x[i]);
 }
 
-void Lcd_Iniciar()//Inicia o LCD no modo 4 bits, cursor desligado e formato 5X7
+void lcd_iniciar()//Inicia o LCD no modo 4 bits, cursor desligado e formato 5X7
 {
-	Lcd_Envia_Cmd(0x02);
+	lcd_envia_cmd(0x02);
 
-	Lcd_Envia_Cmd(0x02);
+	lcd_envia_cmd(0x02);
 
-	Lcd_Envia_Cmd(0x08);
+	lcd_envia_cmd(0x08);
 
-	Lcd_Envia_Cmd(0x00);
+	lcd_envia_cmd(0x00);
 
-	Lcd_Envia_Cmd(0x0C);
+	lcd_envia_cmd(0x0C);
 
-	Lcd_Envia_Cmd(0x00);
+	lcd_envia_cmd(0x00);
 
-	Lcd_Envia_Cmd(0x06);
+	lcd_envia_cmd(0x06);
 }
 
-void Lcd_Limpar()//limpa informações do LCD
+void lcd_limpar()//limpa informações do LCD
 {
 
-	Lcd_Envia_Cmd(0x00);
+	lcd_envia_cmd(0x00);
 
-	Lcd_Envia_Cmd(0x01);	
+	lcd_envia_cmd(0x01);	
 }
 
-void Lcd_Cursor(const unsigned l, const unsigned c)//posiciona o cursor (linha e coluna)
+void lcd_cursor(const unsigned l, const unsigned c)//posiciona o cursor (linha e coluna)
 {
 	unsigned char posicao, z, y;
 	
@@ -99,8 +99,8 @@ void Lcd_Cursor(const unsigned l, const unsigned c)//posiciona o cursor (linha e
 		posicao = 0x80 + c - 1;
 		z = posicao>>0x04;
 		y = posicao&0x0F;
-		Lcd_Envia_Cmd(z);
-		Lcd_Envia_Cmd(y);
+		lcd_envia_cmd(z);
+		lcd_envia_cmd(y);
 	}
 
 	else if(l == 0x02)
@@ -108,39 +108,39 @@ void Lcd_Cursor(const unsigned l, const unsigned c)//posiciona o cursor (linha e
 		posicao = 0xC0 + c - 1;
 		z = posicao>>0x04;
 		y = posicao&0x0F;
-		Lcd_Envia_Cmd(z);
-		Lcd_Envia_Cmd(y);
+		lcd_envia_cmd(z);
+		lcd_envia_cmd(y);
 	}
         else if(l == 0x03)
 	{
 		posicao = 0x94 + c - 1;
 		z = posicao>>0x04;
 		y = posicao&0x0F;
-		Lcd_Envia_Cmd(z);
-		Lcd_Envia_Cmd(y);
+		lcd_envia_cmd(z);
+		lcd_envia_cmd(y);
 	}
         else if(l == 0x04)
 	{
 		posicao = 0xD4 + c - 1;
 		z = posicao>>0x04;
 		y = posicao&0x0F;
-		Lcd_Envia_Cmd(z);
-		Lcd_Envia_Cmd(y);
+		lcd_envia_cmd(z);
+		lcd_envia_cmd(y);
 	}
 }
 
-void Lcd_Shift_Left()//desloca o texto para a esquerda
+void lcd_shift_left()//desloca o texto para a esquerda
 {
 
-	Lcd_Envia_Cmd(0x01);
+	lcd_envia_cmd(0x01);
 
-	Lcd_Envia_Cmd(0x08);	
+	lcd_envia_cmd(0x08);	
 }
 
-void Lcd_Shift_Right()//desloca o texto para a direita
+void lcd_shift_right()//desloca o texto para a direita
 {
 
-	Lcd_Envia_Cmd(0x01);
+	lcd_envia_cmd(0x01);
 
-	Lcd_Envia_Cmd(0x0C);
+	lcd_envia_cmd(0x0C);
 }
