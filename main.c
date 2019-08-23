@@ -206,24 +206,36 @@ void main ()
             
             
             if (posicao<5)
-                nivel_1();
-            if(posicao==5)         
-                nivel_2();
-            if(posicao==6)               
-                nivel_3();
-            if(posicao==7)              
-                nivel_4();
-            if(posicao==8)               
-                nivel_5();
-            if(posicao==9)           
-                nivel_6();
-            
-            
-            
-            
+            {
+                        nivel_1();
+                        cursor();
+            }
                 
-            
-
+            if(posicao==5)         
+                {
+                        nivel_2();
+                        cursor();
+            }
+            if(posicao==6)               
+              {
+                        nivel_3();
+                        cursor();
+            }
+            if(posicao==7)              
+                {
+                        nivel_4();
+                        cursor();
+            }
+            if(posicao==8)               
+{
+                        nivel_5();
+                        cursor();
+            }
+            if(posicao==9)           
+               {
+                        nivel_6();
+                        cursor();
+            }           
         }                                       // fim menu
         }                                       // fim da while
 
