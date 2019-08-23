@@ -1,134 +1,147 @@
-/*
- * File:   main_testando_o_tcc.c
- * Author: Cesar
- *
- * Created on 15 de Agosto de 2019, 08:19
- */
+#define EN RE1
+#define RS RE2
+#define D4 RD4
+#define D5 RD5
+#define D6 RD6
+#define D7 RD7
 
-#include <stdio.h>      //Inclusa a biblioteca C
-#include <stdlib.h>     //Inclusa a biblioteca do windows
-#include "Config_16F871.h"      //Inclusa a configuraÃƒÂ§ÃƒÂ£o do PIC
-#include "lcd.h"        //Incluso a biblioteca do LCD
-
-#define cima RB0;           // botÃ£o cima identificado como RB0
-#define baixo RB1;          // botÃ£o baixo identificado como RB1
-#define confirma RB2;       // botÃ£o confirma como RB2
-#define volta RB3;          // botÃ£o volta como RB3
-
-#define led1 RA0;           // define saidas do portA como led's
-#define led2 RA1;
-#define led3 RA2;
-#define led4 RA3;
-#define led5 RA5;
-
-void cursor()                                   // void que posiciona um traço para simbolizar onde o crusor esta
+void lcd_port(const unsigned char x)//envia os 4 bits para o LCD de uma das duas funções abaixo
 {
-    char posicao ;
-    
-    lcd_cursor(posicao,1);
-    lcd_envia_texto("-");
+	if(x&0x01)
+	D4 = 0x01;
+	else
+	D4 = 0x00;
+	
+	
+	if(x&0x02)
+	D5 = 0x01;
+	else
+	D5 = 0x00;
+	
+	
+	if(x&0x04)
+	D6 = 0x01;
+	else
+	D6 = 0x00;
 
-
-
+	
+	if(x&0x08)
+	D7 = 0x01;
+	else
+	D7 = 0x00;
 }
 
-
-
-void sobe ()                                   // void que possibilita a navegacao pelo menu
+void lcd_envia_cmd(const unsigned x)//envia um comando para o LCD
 {
-    char posicao ;
-    posicao++;
-    }
+	RS = 0x00;
+	lcd_port(x);
+	EN = 0x01;
+	__delay_ms(0x04);
+	EN = 0x00;
+}
 
-
-void desce()
+void lcd_envia_dado(const unsigned char x)//envia um dado para o LCD (caracter, letra ou numero)
 {
-    char posicao ;   
-        posicao--;
-    }
+	unsigned char z = x>>0x04;
+	unsigned char y = x&0x0F;
+	
+	RS = 0x01;
 
+	lcd_port(z);
+	EN = 0x01;
+	__delay_us(40);
+	EN = 0x00;
 
+	lcd_port(y);
+	EN = 0x01;
+	__delay_us(0x28);
+	EN = 0x00;	
+}
 
+void lcd_envia_texto(const unsigned char *x)//com o auxílio da função acima envia palavra ou texto para o LCD
+{
+	int i;
+    for(i = 0; x[i]!='\0'; i++)
+	lcd_envia_dado(x[i]);
+}
 
+void lcd_iniciar()//Inicia o LCD no modo 4 bits, cursor desligado e formato 5X7
+{
+	lcd_envia_cmd(0x02);
 
+	lcd_envia_cmd(0x02);
 
+	lcd_envia_cmd(0x08);
 
-void main ()
-{                                               //Inicio da main
-    TRISD = 0x00;                               // configuraçao para o lcd
-    PORTD = 0x00;                               // configuraçao para o lcd
-    TRISA = 0x00;                               // configura saidas para os leds
-    PORTA = 0x00;                               // configura saidas para os leds
-    TRISB = 0x0F;                               // configura entrada para os botÃµes
-    TRISE = 0x01;                               // config do lcd
+	lcd_envia_cmd(0x00);
 
-    char  inicio=0,                             // variavel para iniciar o lcd
-            menu=0,                             // variavel para inicio do menu
-            posicao,
-            linha;
+	lcd_envia_cmd(0x0C);
 
-          
-    lcd_iniciar ();                             //inicia o lcd
-    lcd_limpar ();                              // limpa o lcd
+	lcd_envia_cmd(0x00);
 
-    while (1)
-    {                                           // inicio da laÃ§o de repetiÃ§Ã£o
-        lcd_cursor (2,7);                   
-        lcd_envia_texto("Aperte");
-        lcd_cursor (3,7);
-        lcd_envia_texto("confirma");
-            
-        if (inicio == 0);                       // caso variÃ¡vel de inÃ­cio for 0
-        {                                       // inicio do laÃ§o de inÃ­cio
-        if (RB2 == 1)                           // caso botÃ£o confirma for pressionado
-        {                                       // inicio do laco do botao
-            lcd_limpar();   
-            lcd_cursor(1,2);
-            lcd_envia_texto("Bem vindo ao simulador didatico");
-            __delay_ms(800);
-            lcd_cursor(3,2);
-            lcd_envia_texto("Por favor,");
-            __delay_ms(800);
-            lcd_cursor(4,2);
-            lcd_envia_texto("antes de utilizar leia o manual do usuario");
-            __delay_ms(5000);
-            inicio=1;                           // seta variÃ¡vel de inÃ­cio como 1
-            lcd_limpar();
+	lcd_envia_cmd(0x06);
+}
 
-        }                                       // fim do laco do botao
-        }                                       // fim do laco de inicio
+void lcd_limpar()//limpa informações do LCD
+{
 
-        if (inicio==1 || menu ==0)
-        {
+	lcd_envia_cmd(0x00);
 
-            lcd_cursor(1,2);
-            lcd_envia_texto("Escolha a partida:");
-            lcd_cursor(3,2);
-            lcd_envia_texto("Partida 1");
-            lcd_cursor(4,2);
-            lcd_envia_texto("Partida 2");
-            cursor();
-            
-            if (RB0==1) // se botao cima for pressionado
-            {    sobe();
-                __delay_ms(100);
-            }
-            
-            if (RB1==1) // se botao baixo for pressionado
-            {     desce();
-            __delay_ms(100);
-            }
-            
-            if(posicao>5)   // caso a posicao do cursor atingir a borda do lcd
-            {
-                linha-- ;
-                posicao=4;
-            }
+	lcd_envia_cmd(0x01);	
+}
 
-        }                                       // fim menu
-        }                                       // fim da while
+void lcd_cursor(const unsigned l, const unsigned c)//posiciona o cursor (linha e coluna)
+{
+	unsigned char posicao, z, y;
+	
+	if(l == 0x01)
+	{
+		posicao = 0x80 + c - 1;
+		z = posicao>>0x04;
+		y = posicao&0x0F;
+		lcd_envia_cmd(z);
+		lcd_envia_cmd(y);
+	}
 
+	else if(l == 0x02)
+	{
+		posicao = 0xC0 + c - 1;
+		z = posicao>>0x04;
+		y = posicao&0x0F;
+		lcd_envia_cmd(z);
+		lcd_envia_cmd(y);
+	}
+        else if(l == 0x03)
+	{
+		posicao = 0x94 + c - 1;
+		z = posicao>>0x04;
+		y = posicao&0x0F;
+		lcd_envia_cmd(z);
+		lcd_envia_cmd(y);
+	}
+        else if(l == 0x04)
+	{
+		posicao = 0xD4 + c - 1;
+		z = posicao>>0x04;
+		y = posicao&0x0F;
+		lcd_envia_cmd(z);
+		lcd_envia_cmd(y);
+	}
+}
 
-        }                                       // Fim da Main
+void lcd_shift_left()//desloca o texto para a esquerda
+{
 
-      
+	lcd_envia_cmd(0x01);
+
+	lcd_envia_cmd(0x08);	
+}
+
+void lcd_shift_right()//desloca o texto para a direita
+{
+
+	lcd_envia_cmd(0x01);
+
+	lcd_envia_cmd(0x0C);
+}
+
