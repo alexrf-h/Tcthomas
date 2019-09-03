@@ -63,8 +63,10 @@ void desce()
         void nivel_1()
         {
             
-            lcd_cursor(1,3);
-            lcd_envia_texto("Escolha a partida:");
+            lcd_cursor(1,2);
+            lcd_envia_texto(" Escolha a partida:");
+            lcd_cursor(2,1);
+            lcd_envia_texto("********************");
             lcd_cursor(3,3);
             lcd_envia_texto("Partida 1");
             lcd_cursor(4,3);
@@ -75,7 +77,8 @@ void desce()
 
         void nivel_2()
         {
-            
+            lcd_cursor(1,1);
+            lcd_envia_texto("********************");
             lcd_cursor(2,3);
             lcd_envia_texto("Partida 1");
             lcd_cursor(3,3);
@@ -146,6 +149,22 @@ void desce()
             cursor();
 
         }
+                void nivel_7()
+        {
+
+
+            lcd_cursor(1,3);
+            lcd_envia_texto("Partida 5");
+            lcd_cursor(2,3);
+            lcd_envia_texto("Partida 6");
+            lcd_cursor(3,3);
+            lcd_envia_texto("Partida 7");
+            cursor();
+            lcd_cursor(4,1);
+            lcd_envia_texto("********************");
+
+
+        }
 
 void main ()
 {                                               //Inicio da main
@@ -161,7 +180,9 @@ void main ()
             menu=0,                             // variavel para inicio do menu
             posicao, 
             start=0,
-            preset=0;
+            preset=0,
+            flag,
+            flag2;
 
     lcd_iniciar ();                             //inicia o lcd
     lcd_limpar ();                              // limpa o lcd
@@ -180,7 +201,6 @@ void main ()
         lcd_envia_texto("Aperte");
         lcd_cursor (3,7);
         lcd_envia_texto("confirma");
-        tempo_seg(5);
         start=1;
         }
 
@@ -192,41 +212,34 @@ void main ()
         
         }
         if (preset==1)                           // caso botao confirma for pressionado
-        {
-                                              
+        {                                              
             lcd_limpar();
             lcd_cursor(1,6);
-            lcd_envia_texto("  Bem vindo ao");
-            
+            lcd_envia_texto("Bem vindo ao");
             lcd_cursor(2,3);
             lcd_envia_texto("Simulador Didatico");
-            
             lcd_cursor(3,10);
             lcd_envia_texto("de");
-            
             lcd_cursor(4,9);
             lcd_envia_texto("Erros");
-            
-            tempo_seg(20);
+            tempo_seg(5);
             
             lcd_limpar();
 
             lcd_cursor(1,1);
             lcd_envia_texto(" Por favor, antes de");
-            
             lcd_cursor(2,1);
             lcd_envia_texto("utilizar o painel");
-            
             lcd_cursor(3,1);
             lcd_envia_texto("leia o manual");
-            
             lcd_cursor(4,1);
             lcd_envia_texto("do usuario");
-            tempo_seg(25);
-            preset=2;
+            tempo_seg(6);
 
+            preset=2;
             inicio=1;                           // seta variavel de inicio como 1
             menu=1;
+            posicao=4;
             lcd_limpar();
 
         }                                // fim do laco do botao
@@ -241,57 +254,49 @@ void main ()
         if (inicio==1 && menu ==1)
         {
             if (RB0==1) // se botao cima for pressionado
-            {    //sobe();
-                lcd_limpar();
-                do{posicao--;
-                if(posicao<3)
-                    posicao=3;
-            }while(RB0==1);
-                 
-            // __delay_ms(50);
+            {
+                if(flag==1)
+                    posicao--;
+                    lcd_limpar();
+                    flag=0;
+                    if (posicao<4)
+                        posicao=4;
 
             }
+            if(RB0==0)
+               
+                flag=1;
 
             if (RB1==1) // se botao baixo for pressionado
-            {     //desce();
-                lcd_limpar();
-                do{posicao++;
-                if(posicao>9)
-                    posicao=9;
-            }while(RB1==1);
-             
-            //__delay_ms(50);
-            }
-
-            switch(posicao)
             {
-                case 3:
-                case 4:
-                nivel_1();
-                break;
-
-                case 5:
-                nivel_2();
-                break;
-                
-
-                case 6:
-                nivel_3();
-                break;
-
-                case 7:
-                nivel_4();
-                break;
-
-                case 8:
-                nivel_5();
-                break;
-
-                case 9:
-                nivel_6();
-                break;
+                    if(flag2==1)
+                    posicao++;
+                    
+                    lcd_limpar();
+                    flag2=0;
+                    if (posicao>=11)
+                        posicao=10;
             }
+
+            if(RB1==0)
+                flag2=1;
+
+            if(posicao<5)
+                nivel_1();         
+            if(posicao==5)
+               nivel_2(); 
+            if(posicao==6)
+                nivel_3();
+            if(posicao==7)
+                nivel_4();
+            if(posicao==8)
+                nivel_5();     
+            if(posicao==9)
+                nivel_6();
+            if (posicao==10)
+                nivel_7();
+                
+            
             }                                       // fim menu
         }                                       // fim da while
         }                                       // Fim da Main
-
